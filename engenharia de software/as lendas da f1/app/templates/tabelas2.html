@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lendas da F1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        h2 {
+            margin-top: 40px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AS LENDAS DA FORMULA 1</h1>
+    </header>
+
+    <div class="container">
+        <h2>Temporadas Históricas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ano</th>
+                    <th>Campeão</th>
+                    <th>Equipe Campeã</th>
+                    <th>Classificações dos Pilotos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for temporada in temporadas %}
+                <tr>
+                    <td>{{ temporada.ano }}</td>
+                    <td>{{ temporada.campeao_piloto.nome }}</td>
+                    <td>{{ temporada.campeao_equipe.nome }}</td>
+                    <td>
+                        {% for corrida in temporada.corrida_set.all %}
+                            <h4>Corrida em {{ corrida.circuito.nome }}</h4>
+                            <ul>
+                                {% for classificacao in corrida.classificacao_set.all %}
+                                    <li>{{ classificacao.piloto.nome }}: {{ classificacao.posicao }}º lugar</li>
+                                {% empty %}
+                                    <li>Sem classificações</li>
+                                {% endfor %}
+                            </ul>
+                        {% empty %}
+                            <p>Sem corridas registradas</p>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <a href="{% url 'login' %}">Página de Login</a>
+        <a href="{% url 'carros' %}">Página de Carros</a>
+        <a href="{% url 'tabelas2' %}">Página de Pontos</a>
+        <a href="{% url 'index' %}">Página Inicial</a>
+    </div>
+</body>
+</html>
